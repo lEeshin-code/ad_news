@@ -4,10 +4,15 @@ import pandas as pd
 import re
 
 # 변환할 폴더 경로 설정
-root_folder = "model_test"  # 폴더이름으로 대체하세요.
+root_folder = "20240410"  # 폴더이름으로 대체하세요.
 
-# 폴더 이름을 그대로 가져와서 변환된 파일을 저장할 디렉토리 경로 설정
-output_folder = "model_test"  # 저장할 경로로 대체하세요.
+# 출력 폴더 경로 설정
+output_folder = root_folder + "_csv"  # 저장할 경로로 대체하세요.
+
+# 출력 폴더 생성
+if not os.path.exists(output_folder):
+    os.makedirs(output_folder)
+    print(f"출력 폴더 {output_folder}가 생성되었습니다.")
 
 # 폴더 내의 모든 하위 폴더를 탐색하며 엑셀 파일을 찾음
 excel_files = glob.glob(os.path.join(root_folder, '**/*.xlsx'), recursive=True)
