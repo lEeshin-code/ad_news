@@ -24,14 +24,16 @@ def merge_data(ad_data_folder, label_data_folder, output_folder):
                     if ad_data['뉴스 식별자'].dtype != label_data['뉴스 식별자'].dtype:
                         label_data['뉴스 식별자'] = label_data['뉴스 식별자'].astype(ad_data['뉴스 식별자'].dtype)
                     
-                    # 뉴스 식별자 열로 병합
-                    merged_data = pd.merge(ad_data, label_data, on='뉴스 식별자', how='inner')
+                    # 광고성 여부 열 추가 및 값 설정
+                    ad_data['광고성 여부'] = 1  # 기본값은 1로 설정
+                    ad_data.loc[ad_data['뉴스 식별자'].isin(label_data['뉴스 식별자']), '광고성 여부'] = 0
                     
                     # 결과를 하나의 파일로 저장 (UTF-8 인코딩 사용)
                     output_file = os.path.join(output_folder, ad_file)
-                    merged_data.to_csv(output_file, index=False, encoding='utf-8-sig')
+                    ad_data.to_csv(output_file, index=False, encoding='utf-8-sig')
                 else:
                     print(f"레이블링된 데이터 파일이 존재하지 않습니다: {label_file_path}")
+                    print(f"해당 파일의 원본 데이터: {ad_file_path}")
 
 # 데이터 병합
 ad_data_folder = "ad_data_standardized"  # 원본 데이터 폴더 경로
